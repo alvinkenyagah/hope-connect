@@ -23,8 +23,7 @@ export default function SignupPage() {
     gender: '',
     password: '',
     confirmPassword: '',
-    agreeTerms: false,
-    anonymous: false
+    agreeTerms: false
   });
 
   // --- Handlers for Form Changes ---
@@ -478,25 +477,6 @@ export default function SignupPage() {
                       {signupForm.password && signupForm.confirmPassword && signupForm.password !== signupForm.confirmPassword && (
                         <p className="text-red-500 text-xs mt-1">Passwords must match.</p>
                       )}
-                    </div>
-
-                    {/* Register Anonymously Checkbox */}
-                    <div className="bg-blue-50 p-4 rounded-xl">
-                      <label className="flex items-start space-x-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          name="anonymous"
-                          checked={signupForm.anonymous}
-                          onChange={handleSignupChange}
-                          className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 mt-0.5"
-                        />
-                        <div>
-                          <span className="font-medium text-gray-900">Register Anonymously</span>
-                          <p className="text-sm text-gray-600 mt-1">
-                            Your full name will be replaced by "Anonymous User" in our records.
-                          </p>
-                        </div>
-                      </label>
                     </div>
 
                     {/* Terms Checkbox */}
