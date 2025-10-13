@@ -22,6 +22,10 @@ export default function LandingPage() {
     navigate('/login'); // The route for the sign-up page
   };
 
+    const handleTakeAssessment = () => {
+    navigate('/dashboard'); // The route for the sign-up page
+  };
+
   const features = [
     {
       icon: <MessageCircle className="w-8 h-8" />,
@@ -78,7 +82,7 @@ export default function LandingPage() {
                 Safe, anonymous, and compassionate support for those facing addiction and personal challenges. You're not alone in this journey.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-2xl transform hover:scale-105 transition flex items-center justify-center space-x-2" onClick={handleGetStarted}>
+                <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-2xl transform hover:scale-105 transition flex items-center justify-center space-x-2" onClick={handleGetStarted} >
                   <span>Start Your Journey</span>
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -180,7 +184,7 @@ export default function LandingPage() {
           <h2 className="text-4xl font-bold text-white mb-6">Ready to Take the First Step?</h2>
           <p className="text-xl text-blue-100 mb-8">Your recovery journey begins with a single decision. We're here to support you every step of the way.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-white text-blue-600 rounded-full font-semibold hover:shadow-2xl transform hover:scale-105 transition">
+            <button className="px-8 py-4 bg-white text-blue-600 rounded-full font-semibold hover:shadow-2xl transform hover:scale-105 transition" onClick={handleTakeAssessment}>
               Start Free Assessment
             </button>
             <button className="px-8 py-4 border-2 border-white text-white rounded-full font-semibold hover:bg-white hover:text-blue-600 transition">
