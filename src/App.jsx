@@ -1,8 +1,16 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+// Import the useNavigate hook to allow for programmatic navigation
+import { useNavigate } from 'react-router-dom'; 
+
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
-import SignupPage from './pages/SignupPage';
+
+// Import the two separate components
+import SignupPage from './pages/SignupPage'; 
+import LoginPage from './pages/LoginPage.jsx';    
+
 import NotFoundPage from './pages/NotFoundPage.jsx';
+
 function App() {
   return (
     <BrowserRouter>
@@ -15,6 +23,7 @@ function App() {
           <Route path="/" element={<LandingPage />} /> 
         
           <Route path="/signup" element={<SignupPage />} /> 
+          <Route path="/login" element={<LoginPage />} />  
                     
           <Route path="*" element={<NotFoundPage />} /> 
 
