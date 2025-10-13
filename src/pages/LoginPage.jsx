@@ -6,33 +6,46 @@ import { useNavigate } from 'react-router-dom';
 const LoadingButtonContent = () => (
   <div className="flex items-center justify-center">
     <svg className="animate-spin h-5 w-5 mr-3 text-white" viewBox="0 0 24 24">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+        fill="none"
+      ></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2
+        5.291A7.962 7.962 0 014 12H0c0 3.042 1.135
+        5.824 3 7.938l3-2.647z"
+      ></path>
     </svg>
     Processing...
   </div>
 );
 
-// We'll accept a prop to handle navigation to the signup page
-export default function LoginPage({ onNavigateToSignup }) {
+// Login Page
+export default function LoginPage({ onNavigateToSignup, onLoginSuccess }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
-
-  const navigate = useNavigate();
-
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: '',
-    rememberMe: false
+    rememberMe: false,
   });
+
+  const navigate = useNavigate();
 
   const handleLoginChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setLoginForm(prev => ({
+    setLoginForm((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
@@ -42,11 +55,13 @@ export default function LoginPage({ onNavigateToSignup }) {
     setIsLoading(true);
 
     try {
-      // API call remains the same
       const response = await fetch('http://localhost:4000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: loginForm.email, password: loginForm.password }),
+        body: JSON.stringify({
+          email: loginForm.email,
+          password: loginForm.password,
+        }),
       });
 
       const data = await response.json();
@@ -54,9 +69,10 @@ export default function LoginPage({ onNavigateToSignup }) {
 
       if (response.ok) {
         setSuccessMessage('Login successful!');
-        // In a real app, you'd save the token/user data here
-        console.log('User logged in:', data.user);
-        console.log('Token:', data.token);
+        if (onLoginSuccess) {
+          onLoginSuccess(data.user, data.token);
+        }
+        navigate('/dashboard');
       } else {
         setError(data.message || 'Login failed. Please check your credentials.');
       }
@@ -68,7 +84,6 @@ export default function LoginPage({ onNavigateToSignup }) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4 pt-7">
-      {/* Background Blobs (keeping the style for visual consistency) */}
       <style>{`
         @keyframes blob {
           0%, 100% { transform: translate(0, 0) scale(1); }
@@ -79,7 +94,7 @@ export default function LoginPage({ onNavigateToSignup }) {
         .animation-delay-2000 { animation-delay: 2s; }
         .animation-delay-4000 { animation-delay: 4s; }
       `}</style>
-      
+
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
         <div className="absolute top-40 right-10 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
@@ -87,7 +102,7 @@ export default function LoginPage({ onNavigateToSignup }) {
       </div>
 
       <div className="relative w-full max-w-6xl pt-9">
-        <button 
+        <button
           onClick={() => window.location.href = '/'}
           className="mb-6 flex items-center space-x-2 text-gray-600 hover:text-blue-600 transition"
         >
@@ -97,69 +112,55 @@ export default function LoginPage({ onNavigateToSignup }) {
 
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           <div className="grid md:grid-cols-2">
-            
-            {/* Left Sidebar (Login-specific content) */}
+            {/* Left Section */}
             <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-12 text-white flex flex-col justify-center">
               <div className="mb-8">
-                {/* Logo and App Name */}
                 <div className="flex items-center space-x-3 mb-6">
-                  {/* Heart icon import remains in both files as it's part of the static branding */}
-                  [cite_start]{/* <Heart className="w-8 h-8" /> - Not included here to reduce unnecessary imports, but it was in the original source[cite: 1, 29]. Adding it back for consistency. */}
                   <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-heart w-8 h-8"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="32"
+                      height="32"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="lucide lucide-heart w-8 h-8"
+                    >
+                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 
+                      5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 
+                      2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 
+                      0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                    </svg>
                   </div>
                   <span className="text-3xl font-bold">Hope Connect</span>
                 </div>
-                {/* Dynamic Text */}
                 <h2 className="text-4xl font-bold mb-4">Welcome Back</h2>
                 <p className="text-blue-100 text-lg">
                   Continue your path to recovery and connect with your support network.
                 </p>
               </div>
-              
-              {/* Feature List (unchanged) */}
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm mt-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-shield w-5 h-5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">100% Confidential</h4>
-                    <p className="text-blue-100 text-sm">Your privacy is our top priority</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm mt-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-check-circle w-5 h-5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Professional Support</h4>
-                    <p className="text-blue-100 text-sm">Licensed counselors available 24/7</p>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="bg-white/20 p-2 rounded-lg backdrop-blur-sm mt-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-heart w-5 h-5"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Compassionate Care</h4>
-                    <p className="text-blue-100 text-sm">Judgment-free environment</p>
-                  </div>
-                </div>
-              </div>
             </div>
 
-            {/* Right Form Area (Login Form) */}
+            {/* Right Section (Form) */}
             <div className="p-12">
-              {/* Error and Success Messages */}
               {error && (
-                <div className="mb-4 flex items-center p-3 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50" role="alert">
+                <div
+                  className="mb-4 flex items-center p-3 text-sm text-red-800 border border-red-300 rounded-lg bg-red-50"
+                  role="alert"
+                >
                   <AlertTriangle className="w-5 h-5 mr-2" />
                   <span className="font-medium">Error:</span> {error}
                 </div>
               )}
+
               {successMessage && (
-                <div className="mb-4 flex items-center p-3 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50" role="alert">
+                <div
+                  className="mb-4 flex items-center p-3 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50"
+                  role="alert"
+                >
                   <CheckCircle className="w-5 h-5 mr-2" />
                   <span className="font-medium">Success:</span> {successMessage}
                 </div>
@@ -170,7 +171,6 @@ export default function LoginPage({ onNavigateToSignup }) {
                 <p className="text-gray-600 mb-8">Access your account to continue</p>
 
                 <div className="space-y-6">
-                  {/* Email Input */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
                     <div className="relative">
@@ -186,7 +186,6 @@ export default function LoginPage({ onNavigateToSignup }) {
                     </div>
                   </div>
 
-                  {/* Password Input */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
                     <div className="relative">
@@ -209,7 +208,6 @@ export default function LoginPage({ onNavigateToSignup }) {
                     </div>
                   </div>
 
-                  {/* Remember Me / Forgot Password */}
                   <div className="flex items-center justify-between">
                     <label className="flex items-center">
                       <input
@@ -221,10 +219,14 @@ export default function LoginPage({ onNavigateToSignup }) {
                       />
                       <span className="ml-2 text-sm text-gray-600">Remember me</span>
                     </label>
-                    <a href="#" className="text-sm text-blue-600 hover:text-blue-700 font-medium">Forgot password?</a>
+                    <a
+                      href="#"
+                      className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                    >
+                      Forgot password?
+                    </a>
                   </div>
 
-                  {/* Submit Button */}
                   <button
                     onClick={handleLoginSubmit}
                     disabled={isLoading}
@@ -233,27 +235,26 @@ export default function LoginPage({ onNavigateToSignup }) {
                     {isLoading ? <LoadingButtonContent /> : 'Sign In'}
                   </button>
 
-                  {/* Navigation to Signup */}
-                 <p className="text-center text-gray-600 mt-6">
+                  <p className="text-center text-gray-600 mt-6">
                     Don't have an account?{' '}
                     <button
-                    type="button"
-                    onClick={() => navigate('/signup')} // <--- Use navigate to change route
-                    className="text-blue-600 hover:text-blue-700 font-semibold"
+                      type="button"
+                      onClick={() => navigate('/signup')}
+                      className="text-blue-600 hover:text-blue-700 font-semibold"
                     >
-                    Sign up
+                      Sign up
                     </button>
-                </p>
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Footer Hotline */}
         <div className="mt-8 text-center text-gray-600">
           <p className="text-sm">
-            Need immediate help? Call our 24/7 hotline: <span className="font-semibold text-blue-600">1-800-HOPE-NOW</span>
+            Need immediate help? Call our 24/7 hotline:{' '}
+            <span className="font-semibold text-blue-600">1-800-HOPE-NOW</span>
           </p>
         </div>
       </div>

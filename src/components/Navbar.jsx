@@ -1,80 +1,131 @@
+
+
+
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Heart, Menu, X } from 'lucide-react';
+import { BrowserRouter, Routes, Route, useNavigate, Link } from 'react-router-dom';
+import { LogOut, Home, User, ArrowLeft, Heart, Mail, Lock, AlertTriangle, CheckCircle, Eye, EyeOff, Menu, X } from 'lucide-react'; 
 
-const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+const Navbar = ({ isLoggedIn, onLogout }) => {
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const navigate = useNavigate();
+
+    // Scroll effect to change Navbar style
+    useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
+    // Handler for navigation (e.g., Get Started)
+    const handleNavigation = (path) => {
+        navigate(path); 
+        setIsMenuOpen(false); // Close mobile menu after navigation
     };
-
-    window.addEventListener('scroll', handleScroll);
     
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+    // Handler for Logout
+    const handleLogoutClick = () => {
+        onLogout();
+        setIsMenuOpen(false);
+        navigate('/'); // Redirect to home after logout
+    }
 
-  // Handler for navigation to the 'Get Started' route
-  const handleGetStarted = () => {
-    navigate('/signup'); // The route for the sign-up page
-    setIsMenuOpen(false); // Close mobile menu after navigation
-  };
+    // Determine the style class based on scroll position
+    const navClass = `fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`;
 
-  return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          
-          {/* Logo and App Name */}
-          <Link to="/" className="flex items-center space-x-2" onClick={() => setIsMenuOpen(false)}>
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-              <Heart className="w-6 h-6 text-white" />
+    // Common Button component logic for DRY principle
+    const NavButton = ({ children, onClick, styleClass, icon }) => (
+        <button 
+            className={`px-6 py-2 rounded-full transform hover:scale-105 transition flex items-center justify-center ${styleClass}`} 
+            onClick={onClick}
+        >
+            {icon}
+            {children}
+        </button>
+    );
+
+    return (
+        <nav className={navClass}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between items-center h-20">
+                    
+                    {/* Logo and App Name */}
+                    <Link to="/" className="flex items-center space-x-2" onClick={() => setIsMenuOpen(false)}>
+                        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
+                            <Heart className="w-6 h-6 text-white" />
+                        </div>
+                        <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            Hope Connect
+                        </span>
+                    </Link>
+
+                    {/* Desktop Menu */}
+                    <div className="hidden md:flex items-center space-x-4">
+                        {isLoggedIn ? (
+                            <>
+                                <Link to="/dashboard" className="text-gray-700 hover:text-blue-600 font-medium transition flex items-center">
+                                    <User className="w-5 h-5 mr-1" />
+                                    Dashboard
+                                </Link>
+                                <NavButton
+                                    onClick={handleLogoutClick}
+                                    styleClass="bg-red-500 text-white hover:bg-red-600"
+                                    icon={<LogOut className="w-4 h-4 mr-2" />}
+                                >
+                                    Logout
+                                </NavButton>
+                            </>
+                        ) : (
+                            <NavButton
+                                onClick={() => handleNavigation('/login')}
+                                styleClass="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg"
+                            >
+                                Get Started
+                            </NavButton>
+                        )}
+                    </div>
+
+                    {/* Mobile Menu Button */}
+                    <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden">
+                        {isMenuOpen ? <X className="w-7 h-7 text-gray-800" /> : <Menu className="w-7 h-7 text-gray-800" />}
+                    </button>
+                </div>
             </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Hope Connect
-            </span>
-          </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            
-            <button 
-              className="px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full hover:shadow-lg transform hover:scale-105 transition" 
-              onClick={handleGetStarted} // Uses the shared handler
-            >
-              Get Started
-            </button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden">
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white border-t">
-          <div className="px-4 py-4 space-y-4">
-            {/* Hash links also need to close the menu on click */}
-            {/* 💡 FIX: Changed the onClick to call handleGetStarted */}
-            <button 
-              className="w-full px-6 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full" 
-              onClick={handleGetStarted} 
-            >
-              Get Started
-            </button>
-          </div>
-        </div>
-      )}
-    </nav>
-  );
+            {/* Mobile Menu Content */}
+            {isMenuOpen && (
+                <div className="md:hidden bg-white border-t transition-all duration-300">
+                    <div className="px-4 py-4 space-y-3 flex flex-col items-center">
+                        {isLoggedIn ? (
+                            <>
+                                <Link to="/dashboard" className="w-full text-center py-2 text-gray-700 hover:text-blue-600 font-medium transition border-b border-gray-100" onClick={() => setIsMenuOpen(false)}>
+                                    Dashboard
+                                </Link>
+                                <NavButton
+                                    onClick={handleLogoutClick}
+                                    styleClass="w-full bg-red-500 text-white hover:bg-red-600"
+                                >
+                                    Logout
+                                </NavButton>
+                            </>
+                        ) : (
+                            <NavButton
+                                onClick={() => handleNavigation('/signup')}
+                                styleClass="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:shadow-lg"
+                            >
+                                Get Started
+                            </NavButton>
+                        )}
+                    </div>
+                </div>
+            )}
+        </nav>
+    );
 };
 
 export default Navbar;
