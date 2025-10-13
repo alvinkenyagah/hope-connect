@@ -196,7 +196,7 @@ export default function SignupPage({ onNavigateToLogin }) {
                 <div className="mb-6 p-4 border-2 border-blue-600 bg-blue-50 rounded-xl text-center">
                   <User className="w-6 h-6 mx-auto mb-2 text-blue-600" />
                   <p className="font-semibold text-gray-900">Registering as a Person Seeking Help</p>
-                  <p className="text-sm text-gray-600">Counselor accounts are created by the admin team.</p>
+                  <p className="text-sm text-gray-600">Reach out to join as a Councellor .</p>
                 </div>
 
                 <div className="space-y-5 max-h-96 overflow-y-auto pr-2">

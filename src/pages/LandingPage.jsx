@@ -19,7 +19,7 @@ export default function LandingPage() {
 
 
   const handleGetStarted = () => {
-    navigate('/signup'); // The route for the sign-up page
+    navigate('/login'); // The route for the sign-up page
   };
 
   const features = [

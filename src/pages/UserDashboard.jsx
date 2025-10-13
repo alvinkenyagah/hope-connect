@@ -20,7 +20,7 @@ const ASSESSMENT_OPTIONS = [
     { value: 3, label: "Nearly every day" },
 ];
 
-// Base API URL (replace with your actual server address)
+
 const API_BASE_URL = 'http://localhost:4000/api';
 
 // Simple Component to display a loading state
@@ -120,10 +120,10 @@ export default function UserDashboard({ currentUser, authToken }) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-4 sm:p-8">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen bg-gray-50 p-4 sm:p-8 ">
+            <div className="max-w-4xl mx-auto pt-9">
                 {/* Header */}
-                <header className="mb-8 border-b pb-4">
+                <header className="mb-8 border-b pb-4 pt-3">
                     <h1 className="text-3xl font-extrabold text-gray-900">
                         {mockUser.role === 'victim' ? "My Hope Connect Dashboard" : "Dashboard"}
                     </h1>
