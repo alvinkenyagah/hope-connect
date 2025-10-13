@@ -69,6 +69,7 @@ export default function LoginPage({ onNavigateToSignup, onLoginSuccess }) {
 
       if (response.ok) {
         setSuccessMessage('Login successful!');
+        
         if (onLoginSuccess) {
           onLoginSuccess(data.user, data.token);
         }
