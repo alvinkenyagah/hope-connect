@@ -67,7 +67,7 @@ export default function SignupPage({ onNavigateToLogin }) {
 
     try {
       // API call remains the same
-      const response = await fetch('http://localhost:4000/api/auth/register', {
+      const response = await fetch('https://hope-connect-server.onrender.com/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

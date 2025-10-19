@@ -21,7 +21,7 @@ const ASSESSMENT_OPTIONS = [
 ];
 
 
-const API_BASE_URL = 'http://localhost:4000/api';
+const API_BASE_URL = 'https://hope-connect-server.onrender.com/api';
 
 // Simple Component to display a loading state
 const LoadingIndicator = () => (

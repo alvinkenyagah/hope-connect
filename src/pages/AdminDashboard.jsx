@@ -14,7 +14,7 @@ const AdminDashboard = ({ currentUser, authToken }) => {
     const [message, setMessage] = useState({ type: '', text: '' });
     const [filterRole, setFilterRole] = useState('all');
 
-    const BASE_URL = 'http://localhost:4000/api/admin'; // Base URL for admin endpoints
+    const BASE_URL = 'https://hope-connect-server.onrender.com/api/admin'; // Base URL for admin endpoints
 
     // --- Data Fetching Logic (Get All Users) ---
     const fetchAllUsers = async () => {
