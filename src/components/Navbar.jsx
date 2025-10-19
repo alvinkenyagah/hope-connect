@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate, Link } from 'react-router-dom';
 import { LogOut, Home, User, ArrowLeft, Heart, Mail, Lock, AlertTriangle, CheckCircle, Eye, EyeOff, Menu, X } from 'lucide-react'; 
@@ -50,6 +47,7 @@ const Navbar = ({ isLoggedIn, onLogout }) => {
     );
 
     return (
+        
         <nav className={navClass}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
