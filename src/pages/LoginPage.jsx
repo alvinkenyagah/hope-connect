@@ -71,10 +71,17 @@ export default function LoginPage({ onNavigateToSignup, onLoginSuccess }) {
       if (response.ok) {
         setSuccessMessage('Login successful!');
         
-        if (onLoginSuccess) {
-          // Pass the user object and token up to App.jsx for state management
+       if (onLoginSuccess) {
           onLoginSuccess(data.user, data.token);
         }
+
+        if (data.user.assignedCounselor) {
+          localStorage.setItem('assignedCounselor', JSON.stringify(data.user.assignedCounselor));
+        }
+
+
+
+
 
         // --- START: UPDATED ROLE-BASED REDIRECTION LOGIC ---
         const userRole = data.user ? data.user.role : 'user';

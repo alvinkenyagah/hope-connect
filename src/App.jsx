@@ -8,7 +8,7 @@ import UserDashboard from './pages/UserDashboard.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx'; 
 import CounselorDashboard from './pages/CounselorDashboard.jsx'; // <-- NEW IMPORT
 import NotFoundPage from './pages/NotFoundPage.jsx';
-
+import ChatPage from './pages/ChatPage.jsx';
 function App() {
   // Initialize state by trying to read from localStorage
   const initialToken = localStorage.getItem('authToken');
@@ -83,6 +83,18 @@ function App() {
               : <LoginPage onLoginSuccess={handleLoginSuccess} /> // Redirect to login if not logged in
           } />
 
+
+
+          <Route
+            path="/chat"
+            element={
+              isLoggedIn ? (
+                <ChatPage currentUser={currentUser} />
+              ) : (
+                <LoginPage onLoginSuccess={handleLoginSuccess} />
+              )
+            }
+          />
           <Route path="*" element={<NotFoundPage />} /> 
         </Routes>
       </main>

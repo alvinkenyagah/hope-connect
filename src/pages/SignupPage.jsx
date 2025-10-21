@@ -43,53 +43,61 @@ export default function SignupPage({ onNavigateToLogin }) {
     }));
   };
 
-  const handleSignupSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setSuccessMessage(null);
+const handleSignupSubmit = async (e) => {
+  e.preventDefault();
+  setError(null);
+  setSuccessMessage(null);
 
-    if (signupForm.password !== signupForm.confirmPassword) {
-      return setError('Passwords do not match.');
-    }
+  if (signupForm.password !== signupForm.confirmPassword) {
+    return setError('Passwords do not match.');
+  }
 
-    setIsLoading(true);
+  setIsLoading(true);
 
-    const payload = {
-      name: signupForm.fullName,
-      email: signupForm.email,
-      password: signupForm.password,
-      role: 'victim',
-      phone: signupForm.phone,
-      dateOfBirth: signupForm.dateOfBirth,
-      gender: signupForm.gender,
-      agreeTerms: signupForm.agreeTerms
-    };
-
-    try {
-      // API call remains the same
-      const response = await fetch('https://hope-connect-server.onrender.com/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      const data = await response.json();
-      setIsLoading(false);
-
-      if (response.ok) {
-        setSuccessMessage('Account created successfully! Redirecting to login...');
-        console.log('User registered:', data.user);
-        console.log('Token:', data.token);
-        // Automatically navigate back to login after success
-        if(onNavigateToLogin) setTimeout(() => onNavigateToLogin(), 2000);
-      } else {
-        setError(data.message || 'Registration failed. Please try again.');
-      }
-    } catch (err) {
-      setIsLoading(false);
-      setError('Network error. Could not connect to the server.');
-    }
+  const payload = {
+    name: signupForm.fullName,
+    email: signupForm.email,
+    password: signupForm.password,
+    role: 'victim',
+    phone: signupForm.phone,
+    dateOfBirth: signupForm.dateOfBirth,
+    gender: signupForm.gender,
+    agreeTerms: signupForm.agreeTerms
   };
+
+  try {
+    const response = await fetch('https://hope-connect-server.onrender.com/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    setIsLoading(false);
+
+    if (response.ok) {
+      // ✅ Store user and counselor details locally
+      localStorage.setItem('authToken', data.token);
+      localStorage.setItem('currentUser', JSON.stringify(data.user));
+
+      if (data.user.assignedCounselor) {
+        localStorage.setItem('assignedCounselor', JSON.stringify(data.user.assignedCounselor));
+      }
+
+      setSuccessMessage('Account created successfully! Redirecting to your dashboard...');
+      console.log('User registered:', data.user);
+
+      // ✅ Redirect to the victim dashboard directly
+      setTimeout(() => navigate('/dashboard'), 1500);
+    } else {
+      setError(data.message || 'Registration failed. Please try again.');
+    }
+  } catch (err) {
+    setIsLoading(false);
+    setError('Network error. Could not connect to the server.');
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4 pt-7">

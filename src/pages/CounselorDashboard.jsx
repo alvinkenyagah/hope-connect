@@ -1,10 +1,13 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function CounselorDashboard({ currentUser, authToken }) {
   if (!currentUser) {
     // Should be handled by App.jsx routing, but a safety check is good
     return <div className="p-8 text-center text-red-600">Access Denied. Please log in.</div>;
   }
+
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-12">
@@ -52,6 +55,17 @@ export default function CounselorDashboard({ currentUser, authToken }) {
               <li>Manage your weekly session schedule.</li>
             </ul>
           </div>
+
+          <div className="mt-6">
+            <button
+              onClick={() => navigate('/chat', { state: { otherUser: { role: 'victim' } } })}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition font-semibold shadow"
+            >
+              Open Chat Panel
+            </button>
+
+          </div>
+
         </section>
       </div>
     </div>
