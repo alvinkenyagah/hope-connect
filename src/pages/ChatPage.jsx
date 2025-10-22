@@ -1,16 +1,15 @@
+// ChatPage.js (Frontend Component)
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// Import the Socket.IO client library
 import { io } from 'socket.io-client'; 
 import { Send, ArrowLeft, MoreVertical, CheckCheck } from 'lucide-react';
 
 export default function ChatPage({ currentUser }) {
   const location = useLocation();
   const navigate = useNavigate();
-  // Ensure we get the user data passed via navigation state
   const { otherUser } = location.state || {};
   
-  // Change ws to be used for the Socket.IO connection object
   const socketRef = useRef(null);
   const messagesEndRef = useRef(null);
   const [messages, setMessages] = useState([]);
@@ -20,7 +19,6 @@ export default function ChatPage({ currentUser }) {
 
   const userId = currentUser?._id || currentUser?.id;
 
-  // Auto-scroll to bottom when new messages arrive
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -32,31 +30,22 @@ export default function ChatPage({ currentUser }) {
   useEffect(() => {
     if (!currentUser || !otherUser || !otherUser._id) {
       console.error("Missing user data for chat. Redirecting to dashboard.");
-      // Use setTimeout to avoid side-effects during render phase
       setTimeout(() => navigate('/dashboard'), 0);
       return;
     }
 
-    // Use http:// for the Socket.IO connection endpoint
     const socketUrl = 'https://hope-connect-server.onrender.com';
-    
-    // 1. Initialize Socket.IO connection
-    // We explicitly set the transport to 'websocket' for better performance if possible
     socketRef.current = io(socketUrl, { transports: ['websocket', 'polling'] });
 
     const socket = socketRef.current;
 
-    // --- Socket.IO Event Listeners ---
-
-    // 2. Handle successful connection (replaces ws.current.onopen)
     socket.on('connect', () => {
       console.log('✅ Socket.IO connected (ID:', socket.id + ')');
       setIsConnected(true);
       
-      // Emit the 'join' event to the server to join the private room
       socket.emit('join', userId); 
 
-      // Fetch chat history only after connecting
+      // Fetch chat history
       fetch(`https://hope-connect-server.onrender.com/api/chat/${userId}/${otherUser._id}`)
         .then(res => res.json())
         .then(data => {
@@ -69,19 +58,25 @@ export default function ChatPage({ currentUser }) {
         });
     });
 
-    // 3. Handle incoming messages (replaces ws.current.onmessage)
+    // CRITICAL: Ignore the sender's own message when echoed back from server.
     socket.on('receive_message', (data) => {
-      // Data is already parsed by Socket.IO
       if (data.message) {
+        const senderId = data.message.from?._id || data.message.from;
+        
+        // If the sender ID matches the current user ID, ignore the broadcast.
+        if (senderId?.toString() === userId.toString()) {
+            console.log("Ignoring echo of own message, relying on local echo.");
+            return; 
+        }
+
+        // This path is for the true recipient.
         setMessages(prev => [...prev, data.message]);
       }
     });
     
-    // 4. Handle connection loss (replaces ws.current.onclose/onerror)
     socket.on('disconnect', (reason) => {
       console.warn('🔌 Socket.IO disconnected:', reason);
       setIsConnected(false);
-      // Socket.IO attempts automatic reconnection
     });
 
     socket.on('connect_error', (error) => {
@@ -89,28 +84,39 @@ export default function ChatPage({ currentUser }) {
       setIsConnected(false);
     });
     
-    // 5. Cleanup function
     return () => {
       if (socketRef.current) {
-        // Use socket.disconnect() instead of close()
         socketRef.current.disconnect();
       }
     };
   }, [userId, currentUser, otherUser, navigate]);
 
   const sendMessage = () => {
-    // Check connection and text
     if (!text.trim() || !isConnected || !socketRef.current) return;
 
+    const plaintext = text.trim();
+    const timestamp = new Date().toISOString(); 
+    
     const payload = {
       from: userId,
       to: otherUser._id,
-      text: text.trim(),
+      text: plaintext, 
+      createdAt: timestamp 
     };
 
-    // Use socket.emit() instead of ws.send()
-    // Socket.IO handles serialization automatically
+    // 1. LOCAL ECHO IMPLEMENTATION: Add the PLAINTEXT message immediately to the state
+    const localMessage = {
+      from: { _id: userId, name: currentUser.name }, 
+      to: { _id: otherUser._id, name: otherUser.name },
+      text: plaintext, // <-- This is the clean, readable text
+      createdAt: timestamp, 
+    };
+    
+    setMessages(prev => [...prev, localMessage]);
+    
+    // 2. Emit the message payload to the server
     socketRef.current.emit('send_message', payload); 
+    
     setText('');
   };
 
@@ -207,15 +213,17 @@ export default function ChatPage({ currentUser }) {
             ) : (
               <div className="space-y-4">
                 {messages.map((msg, i) => {
-                  // NEW LOGIC: Determine sender's ID robustly (handle string ID or populated object)
                   const senderId = msg.from?._id || msg.from;
                   const isMine = senderId?.toString() === userId.toString();
                   
-                  const showAvatar = i === 0 || messages[i - 1].from?.toString() !== msg.from?.toString();
+                  // Use the text property, which is guaranteed plaintext from local echo/backend fix
+                  const messageText = msg.text || ''; 
+                  
+                  const showAvatar = i === 0 || messages[i - 1].from?._id?.toString() !== msg.from?._id?.toString();
                   
                   return (
                     <div
-                      key={i}
+                      key={msg._id || i}
                       className={`flex items-end gap-2 ${isMine ? 'flex-row-reverse' : 'flex-row'}`}
                     >
                       {!isMine && (
@@ -236,12 +244,12 @@ export default function ChatPage({ currentUser }) {
                               : 'bg-gray-100 text-gray-800 rounded-t-xl rounded-br-xl rounded-bl-sm shadow-sm'
                           }`}
                         >
-                          <p className="text-sm leading-relaxed break-words">{msg.text}</p>
+                          <p className="text-sm leading-relaxed break-words">{messageText}</p>
                         </div>
                         
                         <div className="flex items-center gap-1 mt-1 px-2">
                           <span className="text-xs text-gray-500">
-                            {formatTime(msg.timestamp || msg.createdAt)}
+                            {formatTime(msg.createdAt)}
                           </span>
                           {isMine && (
                             <CheckCheck className="w-3 h-3 text-blue-600" />
@@ -299,6 +307,3 @@ export default function ChatPage({ currentUser }) {
     </div>
   );
 }
-
-
-
