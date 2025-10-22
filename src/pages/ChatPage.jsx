@@ -38,7 +38,7 @@ export default function ChatPage({ currentUser }) {
     }
 
     // Use http:// for the Socket.IO connection endpoint
-    const socketUrl = 'http://localhost:4000';
+    const socketUrl = 'https://hope-connect-server.onrender.com';
     
     // 1. Initialize Socket.IO connection
     // We explicitly set the transport to 'websocket' for better performance if possible
