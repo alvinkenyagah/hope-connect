@@ -1,1 +1,30 @@
 @import "tailwindcss";
+
+/* These styles are only necessary if you are running this outside 
+    a development environment that processes Tailwind's JIT and you 
+    want custom animations, like the 'animate-blob' found in LoginPage.
+*/
+
+/* Example of custom utility classes for animation delay */
+.animation-delay-2000 {
+    animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+    animation-delay: 4s;
+}
+
+/* Example of custom keyframe definition (if needed) */
+@keyframes blob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 20px) scale(0.9); }
+}
+
+/* Example of applying a custom animation */
+.animate-blob { 
+    animation: blob 7s infinite cubic-bezier(0.6, -0.28, 0.735, 0.045); 
+}
+
+/* Global Dark Mode setup (handled by JS in the React App) */
+/* The dark: classes handle the styling directly */
