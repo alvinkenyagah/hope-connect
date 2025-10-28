@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Award, Feather, History, ChevronRight, BarChart, XCircle, CheckCircle, Clock } from 'lucide-react';
+import { Award, Feather, History, ChevronRight, BarChart, XCircle, CheckCircle, Clock, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -291,16 +291,43 @@ const VictimDashboard = ({ user, latestAssessment, onStartAssessment, onViewHist
             </button>
         </div>
 
-        {/* Other placeholders remain unchanged */}
-        <div className="bg-white p-4 rounded-xl shadow-md text-center border border-dashed border-gray-300">
-          <div className="mx-auto w-fit p-2 bg-gray-50 rounded-full mb-2">
-            <Clock className="w-6 h-6 text-blue-600" />
-          </div>
-          <h3 className="font-semibold text-gray-800">Schedule Appointment</h3>
-          <p className="text-sm text-gray-500">
-            Book a session with your counselor.
-          </p>
+
+            {/* New Schedule Appointment Card */}
+        <div className="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-200">
+            <div className="mx-auto w-fit p-2 bg-blue-50 rounded-full mb-2">
+                <Clock className="w-6 h-6 text-blue-600" />
+            </div>
+            <h3 className="font-semibold text-gray-800 mb-2">Schedule Appointment</h3>
+            <p className="text-sm text-gray-500 mb-4">
+                Book a session with your counselor.
+            </p>
+            <button
+                onClick={() => navigate('/appointments', { state: { view: 'schedule' } })} // Or set internal state
+                className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition font-semibold shadow"
+            >
+                Book Now
+            </button>
         </div>
+
+        {/* View Appointments Card */}
+        <div className="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-200">
+            <div className="mx-auto w-fit p-2 bg-purple-50 rounded-full mb-2">
+                <Calendar className="w-6 h-6 text-purple-600" />
+            </div>
+            <h3 className="font-semibold text-gray-800 mb-2">View Appointments</h3>
+            <p className="text-sm text-gray-500 mb-4">
+                See your scheduled, completed, and cancelled sessions.
+            </p>
+            <button
+                onClick={() => navigate('/appointments')} // Or set internal state
+                className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition font-semibold shadow"
+            >
+                View History
+            </button>
+        </div>
+
+
+
 
         <div className="bg-white p-4 rounded-xl shadow-md text-center border border-dashed border-gray-300">
           <div className="mx-auto w-fit p-2 bg-gray-50 rounded-full mb-2">

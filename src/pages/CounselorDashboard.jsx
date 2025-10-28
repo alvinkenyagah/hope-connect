@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import AppointmentsList from '../components/AppointmentsList.jsx';
 export default function CounselorDashboard({ currentUser, authToken }) {
   const navigate = useNavigate();
   const [assignedVictims, setAssignedVictims] = useState([]);
@@ -94,6 +94,24 @@ return (
           <p className="text-gray-500 text-sm mt-1">Average weekly compliance rate</p>
         </div>
       </section>
+
+
+
+
+
+        <section className="mt-12 mb-16">
+          <AppointmentsList 
+            user={currentUser} 
+            authToken={authToken} 
+            // Counselors don't schedule new here, they just manage
+            onScheduleNew={() => {}} 
+          />
+        </section>
+
+
+
+
+
 
       {/* Assigned Clients Table */}
       <section className="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300">
