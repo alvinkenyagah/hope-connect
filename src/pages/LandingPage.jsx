@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Heart, Shield, MessageCircle, Users, TrendingUp, MapPin, Phone, Mail, CheckCircle, ChevronRight, Clock, Award } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
-
+import MyIcon from '../components/icon.jsx';
 
 export default function LandingPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,42 +26,6 @@ export default function LandingPage() {
     navigate('/dashboard'); // The route for the sign-up page
   };
 
-  const features = [
-    {
-      icon: <MessageCircle className="w-8 h-8" />,
-      title: "Anonymous Support",
-      description: "Connect with professional counselors safely and privately through our secure chat system."
-    },
-    {
-      icon: <Users className="w-8 h-8" />,
-      title: "Expert Counselors",
-      description: "Access certified professionals specialized in addiction recovery and mental health support."
-    },
-    {
-      icon: <TrendingUp className="w-8 h-8" />,
-      title: "Track Your Progress",
-      description: "Monitor your recovery journey with personalized progress tracking and milestone celebrations."
-    },
-    {
-      icon: <Shield className="w-8 h-8" />,
-      title: "24/7 Emergency Help",
-      description: "One-click panic button for immediate support when you need it most."
-    },
-    {
-      icon: <Clock className="w-8 h-8" />,
-      title: "Flexible Scheduling",
-      description: "Book appointments that fit your schedule with easy online session management."
-    },
-    {
-      icon: <Award className="w-8 h-8" />,
-      title: "Self-Help Resources",
-      description: "Access a library of articles, campaigns, and educational content for continuous learning."
-    }
-  ];
-
-
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
@@ -70,19 +34,16 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
-              <div className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold">
-                🌟 Your Journey to Recovery Starts Here
-              </div>
               <h1 className="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
                 Connect With
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Professional </span>
+                <span > Professional </span>
                 Counselors
               </h1>
               <p className="text-xl text-gray-600">
                 Safe, anonymous, and compassionate support for those facing addiction and personal challenges. You're not alone in this journey.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-semibold hover:shadow-2xl transform hover:scale-105 transition flex items-center justify-center space-x-2" onClick={handleGetStarted} >
+                <button className="px-8 py-4 bg-blue-500 text-white rounded-full font-semibold hover:shadow-2xl transform hover:scale-105 transition flex items-center justify-center space-x-2" onClick={handleGetStarted} >
                   <span>Start Your Journey</span>
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -131,27 +92,6 @@ export default function LandingPage() {
       </section>
 
 
-      {/* Features Section */}
-      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Everything You Need to Recover</h2>
-            <p className="text-xl text-gray-600">Comprehensive tools and support for your healing journey</p>
-          </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1">
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-xl inline-block mb-4">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* How It Works */}
       <section id="how-it-works" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-purple-50">
         <div className="max-w-7xl mx-auto">
@@ -166,7 +106,7 @@ export default function LandingPage() {
               { step: "3", title: "Track Your Progress", desc: "Follow your recovery journey and celebrate every milestone" }
             ].map((item, idx) => (
               <div key={idx} className="relative bg-white p-8 rounded-2xl shadow-lg text-center">
-                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-purple-600 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-blue-400 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
                   {item.step}
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3 mt-4">{item.title}</h3>
@@ -179,7 +119,17 @@ export default function LandingPage() {
 
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 to-purple-600">
+      {/* <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-green-900 to-orange-600"> */}
+
+
+          <section
+            className="py-20 px-4 sm:px-6 lg:px-8 bg-blue-400"
+            // style={{
+            //   // Define your gradient colors here
+            //   background: 'linear-gradient(to right, #448564ff, #9b4e4eff)',
+            // }}
+          >
+
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-white mb-6">Ready to Take the First Step?</h2>
           <p className="text-xl text-blue-100 mb-8">Your recovery journey begins with a single decision. We're here to support you every step of the way.</p>
@@ -195,36 +145,23 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer id="contact" className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+      <footer id="contact" className="bg-gradient-to-br from-blue-50 to-purple-50 text-gray-900 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="gap-8 mb-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
-                  <Heart className="w-5 h-5 text-white" />
+                <div className="">
+                  <MyIcon/>
                 </div>
                 <span className="text-xl font-bold">Hope Connect</span>
               </div>
               <p className="text-gray-400">Empowering recovery, one connection at a time.</p>
             </div>
+
             <div>
 
             </div>
             <div>
-
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Emergency</h4>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-2 text-gray-400">
-                  <Phone className="w-5 h-5" />
-                  <span>24/7 Hotline: 1-800-HELP</span>
-                </div>
-                <div className="flex items-center space-x-2 text-gray-400">
-                  <Mail className="w-5 h-5" />
-                  <span>support@hopeconnect.com</span>
-                </div>
-              </div>
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400">

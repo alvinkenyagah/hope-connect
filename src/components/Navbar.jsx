@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { LogOut, User, Heart, Menu, X, MessageCircle } from 'lucide-react';
+import { LogOut, User, Heart, Menu, X, MessageCircle,PersonStanding } from 'lucide-react';
+import MyIcon from './icon.jsx';
 
 const Navbar = ({ isLoggedIn, onLogout, currentUser }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -94,10 +95,16 @@ const Navbar = ({ isLoggedIn, onLogout, currentUser }) => {
           
           {/* Logo and App Name */}
           <Link to="/" className="flex items-center space-x-3 group" onClick={() => setIsMenuOpen(false)}>
-            <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-blue-700 p-2.5 rounded-xl shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
-              <Heart className="w-6 h-6 text-white" fill="currentColor" />
-            </div>
-            <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 bg-clip-text text-transparent group-hover:from-blue-700 group-hover:via-purple-700 group-hover:to-blue-800 transition-all duration-300">
+            {/* <div className="bg-blue-400 p-2.5 shadow-lg group-hover:shadow-xl group-hover:scale-105 transition-all duration-300">
+           
+            <PersonStanding className=" text-white"/>
+              
+            </div> */}
+
+ 
+      <MyIcon className=""/>      
+
+            <span className="text-2xl font-bold bg-blue-500 bg-clip-text text-transparent group-hover:from-blue-700 group-hover:via-purple-700 group-hover:to-blue-800 transition-all duration-300">
               Hope Connect
             </span>
           </Link>
@@ -142,7 +149,7 @@ const Navbar = ({ isLoggedIn, onLogout, currentUser }) => {
                 </Link>
                 <NavButton
                   onClick={() => handleNavigation('/signup')}
-                  styleClass="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 text-white hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 shadow-md hover:shadow-xl hover:scale-105"
+                  styleClass="bg-blue-500 text-white hover:from-blue-700 hover:via-purple-700 hover:to-blue-800 shadow-md hover:shadow-xl hover:scale-105"
                 >
                   Sign Up
                 </NavButton>

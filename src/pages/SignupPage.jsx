@@ -132,7 +132,7 @@ const handleSignupSubmit = async (e) => {
           <div className="grid md:grid-cols-2">
 
             {/* Left Sidebar (Signup-specific content) */}
-            <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-12 text-white flex flex-col justify-center">
+            <div className="bg-blue-400 p-12 text-white flex flex-col justify-center">
               <div className="mb-8">
                 {/* Logo and App Name */}
                 <div className="flex items-center space-x-3 mb-6">
@@ -219,7 +219,7 @@ const handleSignupSubmit = async (e) => {
                         value={signupForm.fullName}
                         onChange={handleSignupChange}
                         className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        placeholder="John Doe"
+                        // placeholder="Username"
                       />
                     </div>
                   </div>
@@ -235,7 +235,7 @@ const handleSignupSubmit = async (e) => {
                         value={signupForm.email}
                         onChange={handleSignupChange}
                         className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        placeholder="your@email.com"
+                        // placeholder="your@email.com"
                       />
                     </div>
                   </div>
@@ -360,7 +360,7 @@ const handleSignupSubmit = async (e) => {
                   <button
                     onClick={handleSignupSubmit}
                     disabled={isLoading || signupForm.password !== signupForm.confirmPassword}
-                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-3 bg-blue-600 text-white rounded-xl font-semibold hover:shadow-lg transform transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading ? <LoadingButtonContent /> : 'Create Account'}
                   </button>

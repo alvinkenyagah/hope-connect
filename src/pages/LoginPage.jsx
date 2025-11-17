@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff, Mail, Lock, ArrowLeft, CheckCircle, AlertTriangle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import MyIcon from '../components/icon.jsx';
 
 // Re-using the utility component for loading state
 const LoadingButtonContent = () => (
@@ -136,27 +137,11 @@ export default function LoginPage({ onNavigateToSignup, onLoginSuccess }) {
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
           <div className="grid md:grid-cols-2">
             {/* Left Section */}
-            <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-12 text-white flex flex-col justify-center">
+            <div className="bg-blue-400 p-12 text-white flex flex-col justify-center">
               <div className="mb-8">
                 <div className="flex items-center space-x-3 mb-6">
                   <div className="bg-white/20 p-3 rounded-xl backdrop-blur-sm">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="lucide lucide-heart w-8 h-8"
-                    >
-                      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 
-                      5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 
-                      2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 
-                      0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                    </svg>
+                  <MyIcon/>
                   </div>
                   <span className="text-3xl font-bold">Hope Connect</span>
                 </div>
@@ -204,7 +189,7 @@ export default function LoginPage({ onNavigateToSignup, onLoginSuccess }) {
                         value={loginForm.email}
                         onChange={handleLoginChange}
                         className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                        placeholder="your@email.com"
+                        // placeholder="your@email.com"
                       />
                     </div>
                   </div>
@@ -253,7 +238,7 @@ export default function LoginPage({ onNavigateToSignup, onLoginSuccess }) {
                   <button
                     onClick={handleLoginSubmit}
                     disabled={isLoading}
-                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-3 bg-blue-600  text-white rounded-xl font-semibold hover:shadow-lg transform transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoading ? <LoadingButtonContent /> : 'Sign In'}
                   </button>
