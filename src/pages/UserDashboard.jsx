@@ -192,7 +192,7 @@ const ProgressCard = ({ latestAssessment, onViewHistory }) => {
       {latestAssessment ? (
         <>
           <p className="text-gray-600 mb-2">
-            Last Score: <span className={`text-2xl font-extrabold ${interpretation.color}`}>{latestAssessment.score} / 24</span>
+           Past Stress Level Score: <span className={`text-2xl font-extrabold ${interpretation.color}`}>{latestAssessment.score}</span>
           </p>
           <p className={`text-sm mb-4 ${interpretation.color}`}>{interpretation.text}</p>
           <button
@@ -462,52 +462,74 @@ const AssessmentHistory = ({ history, onBack }) => {
   const formatDate = assessmentUtils.formatDate;
   const getScoreInterpretation = assessmentUtils.getScoreInterpretation;
 
-  return (
-    <div className="bg-white p-6 rounded-2xl shadow-2xl">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center">
-        <History className="w-6 h-6 mr-2 text-green-600"/> Assessment History ({history.length} Records)
+return (
+  <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-3xl shadow-xl border border-gray-100">
+    <div className="flex items-center justify-between mb-6">
+      <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+        <div className="p-2 bg-green-100 rounded-xl">
+          <History className="w-7 h-7 text-green-600" />
+        </div>
+        <span>Assessment History</span>
+        <span className="text-lg font-normal text-gray-500">({history.length})</span>
       </h2>
-
       <button
         onClick={onBack}
-        className="mb-6 flex items-center text-blue-600 hover:text-blue-700 transition"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-xl transition-all duration-200"
       >
-        <ChevronRight className="w-5 h-5 mr-1 transform rotate-180" /> Back to Dashboard
+        <ChevronRight className="w-4 h-4 transform rotate-180" />
+        Back to Dashboard
       </button>
+    </div>
 
-      {history.length === 0 ? (
-        <div className="text-center p-8 bg-gray-50 rounded-xl text-gray-600">
-          You haven't completed any assessments yet.
+    {history.length === 0 ? (
+      <div className="text-center p-12 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-dashed border-gray-300">
+        <div className="inline-flex p-4 bg-white rounded-full mb-4 shadow-sm">
+          <History className="w-8 h-8 text-gray-400" />
         </div>
-      ) : (
-        <div className="overflow-x-auto">
+        <p className="text-gray-600 text-lg font-medium">No assessments yet</p>
+        <p className="text-gray-500 text-sm mt-2">Complete your first assessment to see your history here</p>
+      </div>
+    ) : (
+      <div className="space-y-4">
+        <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
           <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+            <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                   Date
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Score (Max 24)
+                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  Stress Level
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                   Status
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {history.map((assessment) => {
+            <tbody className="bg-white divide-y divide-gray-100">
+              {history.map((assessment, index) => {
                 const interpretation = getScoreInterpretation(assessment.score);
                 return (
-                  <tr key={assessment._id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {formatDate(assessment.dateTaken)}
+                  <tr 
+                    key={assessment._id}
+                    className="hover:bg-gray-50 transition-colors duration-150"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span className="text-sm font-medium text-gray-900">
+                          {formatDate(assessment.dateTaken)}
+                        </span>
+                      </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <span className="font-bold text-lg">{assessment.score}</span> / 24
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-baseline gap-1">
+                        <span className="text-2xl font-bold text-gray-900">{assessment.score}</span>
+                        <span className="text-sm text-gray-500 font-medium">/24</span>
+                      </div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full text-white ${interpretation.badge}`}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-4 py-2 inline-flex text-xs font-bold rounded-xl text-white shadow-sm ${interpretation.badge}`}>
                         {interpretation.text.split('.')[0]}
                       </span>
                     </td>
@@ -517,9 +539,19 @@ const AssessmentHistory = ({ history, onBack }) => {
             </tbody>
           </table>
         </div>
-      )}
-    </div>
-  );
+        
+        <div className="flex items-center gap-2 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+          <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center bg-amber-400 rounded-full">
+            <span className="text-white text-xs font-bold">!</span>
+          </div>
+          <p className="text-sm font-semibold text-amber-900">
+            Lower scores indicate better wellbeing
+          </p>
+        </div>
+      </div>
+    )}
+  </div>
+);
 };
 
 // ============================================================
@@ -596,12 +628,7 @@ export default function UserDashboard({ currentUser, authToken }) {
       case 'dashboard':
       default:
         return (
-          // <VictimDashboard 
-          //   user={mockUser} 
-          //   latestAssessment={assessmentHistory[0]}
-          //   onStartAssessment={() => setCurrentView('assessment')}
-          //   onViewHistory={() => setCurrentView('results')}
-          // />
+
 
 
           <VictimDashboard 
