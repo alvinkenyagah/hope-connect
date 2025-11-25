@@ -3,6 +3,12 @@ import { Award, Feather, History, ChevronRight, BarChart, XCircle, CheckCircle, 
 import { useNavigate } from 'react-router-dom';
 
 
+import PersonalizedInsightCard from '../components/PersonalizedInsightCard';
+
+
+
+
+
 
 // ============================================================
 // CONSTANTS & CONFIG
@@ -241,7 +247,19 @@ const AssessmentQuestion = ({ question, selectedValue, onSelect }) => (
 
 
 
-const VictimDashboard = ({ user, latestAssessment, onStartAssessment, onViewHistory }) => {
+// const VictimDashboard = ({ user, latestAssessment, onStartAssessment, onViewHistory }) => {
+
+
+  const VictimDashboard = ({ 
+  user, 
+  latestAssessment, 
+  assessmentHistory,    // ✅ FIX
+  onStartAssessment, 
+  onViewHistory 
+}) => {
+
+
+
 
     const navigate = useNavigate(); 
     const counselor = JSON.parse(localStorage.getItem("assignedCounselor"));
@@ -254,6 +272,12 @@ const VictimDashboard = ({ user, latestAssessment, onStartAssessment, onViewHist
   return (
     <div className="space-y-8">
 
+
+
+
+
+
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <AssessmentCard 
           canTakeAssessment={canTakeAssessment}
@@ -264,6 +288,14 @@ const VictimDashboard = ({ user, latestAssessment, onStartAssessment, onViewHist
           onViewHistory={onViewHistory}
         />
       </div>
+
+
+          <PersonalizedInsightCard
+            latestAssessment={assessmentHistory[0]}
+            assessmentHistory={assessmentHistory}
+            onBookSession={() => navigate('/appointments', { state: { view: 'schedule' } })}
+            onChatCounselor={() => navigate('/chat', { state: { otherUser: counselor } })}
+          />
 
 
 
@@ -326,18 +358,6 @@ const VictimDashboard = ({ user, latestAssessment, onStartAssessment, onViewHist
             </button>
         </div>
 
-
-
-
-        <div className="bg-white p-4 rounded-xl shadow-md text-center border border-dashed border-gray-300">
-          <div className="mx-auto w-fit p-2 bg-gray-50 rounded-full mb-2">
-            <BarChart className="w-6 h-6 text-purple-600" />
-          </div>
-          <h3 className="font-semibold text-gray-800">Personalized Insights</h3>
-          <p className="text-sm text-gray-500">
-            Deep analysis of your well-being trends.
-          </p>
-        </div>
       </div>
     </div>
   );
@@ -576,12 +596,25 @@ export default function UserDashboard({ currentUser, authToken }) {
       case 'dashboard':
       default:
         return (
+          // <VictimDashboard 
+          //   user={mockUser} 
+          //   latestAssessment={assessmentHistory[0]}
+          //   onStartAssessment={() => setCurrentView('assessment')}
+          //   onViewHistory={() => setCurrentView('results')}
+          // />
+
+
           <VictimDashboard 
             user={mockUser} 
             latestAssessment={assessmentHistory[0]}
+            assessmentHistory={assessmentHistory}   // ✅ FIX HERE
             onStartAssessment={() => setCurrentView('assessment')}
             onViewHistory={() => setCurrentView('results')}
           />
+
+
+
+
         );
     }
   };
