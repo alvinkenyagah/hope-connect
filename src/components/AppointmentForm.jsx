@@ -52,6 +52,7 @@ export default function AppointmentForm({ counselor, authToken, onSubmissionComp
   };
 
   return (
+    <>
     <div className="bg-white p-6 rounded-2xl shadow-2xl border border-blue-200">
       <h2 className="text-2xl font-bold text-blue-700 mb-4 flex items-center">
         <Calendar className="w-7 h-7 mr-2" /> Schedule a Session
@@ -117,5 +118,8 @@ export default function AppointmentForm({ counselor, authToken, onSubmissionComp
         </div>
       </form>
     </div>
+
+    
+    </>
   );
 }

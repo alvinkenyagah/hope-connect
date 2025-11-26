@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Award, Feather, History, ChevronRight, BarChart, XCircle, CheckCircle, Clock, Calendar } from 'lucide-react';
+import { Award, Feather, History, ChevronRight, ArrowLeft, XCircle, CheckCircle, Clock, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -463,7 +463,23 @@ const AssessmentHistory = ({ history, onBack }) => {
   const getScoreInterpretation = assessmentUtils.getScoreInterpretation;
 
 return (
+
+<>
+          <button
+          onClick={onBack}
+            className="group inline-flex items-center mb-3 gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow"
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            Back to Dashboard
+          </button>
+
+
   <div className="bg-gradient-to-br from-white to-gray-50 p-8 rounded-3xl shadow-xl border border-gray-100">
+
+
+
+
+
     <div className="flex items-center justify-between mb-6">
       <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
         <div className="p-2 bg-green-100 rounded-xl">
@@ -472,16 +488,30 @@ return (
         <span>Assessment History</span>
         <span className="text-lg font-normal text-gray-500">({history.length})</span>
       </h2>
-      <button
-        onClick={onBack}
-        className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-xl transition-all duration-200"
-      >
-        <ChevronRight className="w-4 h-4 transform rotate-180" />
-        Back to Dashboard
-      </button>
+ 
+
+
+
+
+
     </div>
 
+
     {history.length === 0 ? (
+
+<>
+
+
+                <button
+          onClick={onBack}
+            className="group inline-flex items-center mb-3 gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow"
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            Back to Dashboard
+          </button>
+
+
+
       <div className="text-center p-12 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-dashed border-gray-300">
         <div className="inline-flex p-4 bg-white rounded-full mb-4 shadow-sm">
           <History className="w-8 h-8 text-gray-400" />
@@ -489,68 +519,131 @@ return (
         <p className="text-gray-600 text-lg font-medium">No assessments yet</p>
         <p className="text-gray-500 text-sm mt-2">Complete your first assessment to see your history here</p>
       </div>
+      </>
     ) : (
-      <div className="space-y-4">
-        <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gradient-to-r from-gray-50 to-gray-100">
-              <tr>
-                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                  Date
-                </th>
-                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                  Stress Level
-                </th>
-                <th scope="col" className="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-100">
-              {history.map((assessment, index) => {
-                const interpretation = getScoreInterpretation(assessment.score);
-                return (
-                  <tr 
-                    key={assessment._id}
-                    className="hover:bg-gray-50 transition-colors duration-150"
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                        <span className="text-sm font-medium text-gray-900">
-                          {formatDate(assessment.dateTaken)}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-bold text-gray-900">{assessment.score}</span>
-                        <span className="text-sm text-gray-500 font-medium">/24</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-4 py-2 inline-flex text-xs font-bold rounded-xl text-white shadow-sm ${interpretation.badge}`}>
-                        {interpretation.text.split('.')[0]}
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        
-        <div className="flex items-center gap-2 p-4 bg-amber-50 border border-amber-200 rounded-xl">
-          <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center bg-amber-400 rounded-full">
-            <span className="text-white text-xs font-bold">!</span>
+      
+<div className="space-y-4">
+  {/* Desktop Table View */}
+  <div className="hidden md:block overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+    <table className="min-w-full divide-y divide-gray-200">
+      <thead className="bg-gray-50">
+        <tr>
+          <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Date
+          </th>
+          <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Stress Level
+          </th>
+          <th scope="col" className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            Status
+          </th>
+        </tr>
+      </thead>
+      <tbody className="bg-white divide-y divide-gray-100">
+        {history.map((assessment, index) => {
+          const interpretation = getScoreInterpretation(assessment.score);
+          return (
+            <tr 
+              key={assessment._id}
+              className="hover:bg-gray-50 transition-colors duration-200 group"
+            >
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full group-hover:scale-125 transition-transform duration-200"></div>
+                  <span className="text-sm font-medium text-gray-900">
+                    {formatDate(assessment.dateTaken)}
+                  </span>
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-bold text-gray-900">{assessment.score}</span>
+                    <span className="text-sm text-gray-500 font-medium">/24</span>
+                  </div>
+                  <div className="flex-1 max-w-[120px] h-2 bg-gray-100 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full rounded-full transition-all duration-300 ${
+                        assessment.score <= 6 ? 'bg-green-500' :
+                        assessment.score <= 12 ? 'bg-yellow-500' :
+                        assessment.score <= 18 ? 'bg-orange-500' :
+                        'bg-red-500'
+                      }`}
+                      style={{ width: `${(assessment.score / 24) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span className={`px-3 py-1.5 inline-flex items-center text-xs font-semibold rounded-lg ${interpretation.badge}`}>
+                  {interpretation.text.split('.')[0]}
+                </span>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+
+  {/* Mobile Card View */}
+  <div className="md:hidden space-y-3">
+    {history.map((assessment, index) => {
+      const interpretation = getScoreInterpretation(assessment.score);
+      return (
+        <div 
+          key={assessment._id}
+          className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-200"
+        >
+          <div className="flex items-start justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              <span className="text-sm font-medium text-gray-900">
+                {formatDate(assessment.dateTaken)}
+              </span>
+            </div>
+            <span className={`px-3 py-1 text-xs font-semibold rounded-lg ${interpretation.badge}`}>
+              {interpretation.text.split('.')[0]}
+            </span>
           </div>
-          <p className="text-sm font-semibold text-amber-900">
-            Lower scores indicate better wellbeing
-          </p>
+          
+          <div className="space-y-2">
+            <div className="flex items-baseline gap-1">
+              <span className="text-3xl font-bold text-gray-900">{assessment.score}</span>
+              <span className="text-sm text-gray-500 font-medium">/24</span>
+            </div>
+            
+            <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+              <div 
+                className={`h-full rounded-full transition-all duration-300 ${
+                  assessment.score <= 6 ? 'bg-green-500' :
+                  assessment.score <= 12 ? 'bg-yellow-500' :
+                  assessment.score <= 18 ? 'bg-orange-500' :
+                  'bg-red-500'
+                }`}
+                style={{ width: `${(assessment.score / 24) * 100}%` }}
+              ></div>
+            </div>
+          </div>
         </div>
-      </div>
+      );
+    })}
+  </div>
+  
+  <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+    <div className="flex-shrink-0 w-5 h-5 flex items-center justify-center bg-blue-500 rounded-full mt-0.5">
+      <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
+    <p className="text-sm font-medium text-blue-900">
+      Lower scores indicate better wellbeing. Scores range from 0 (best) to 24 (highest stress).
+    </p>
+  </div>
+</div>
     )}
   </div>
+  </>
 );
 };
 
